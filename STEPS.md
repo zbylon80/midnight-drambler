@@ -39,13 +39,13 @@ Zadania:
 - [x] Dodać `LICENSE`.
 - [x] Dodać `.gitignore`.
 - [x] Dodać `.gitattributes`.
-- [ ] Dodać ikony rozszerzenia.
-- [ ] Podpiąć ikony w `manifest.json`.
+- [x] Dodać ikony rozszerzenia.
+- [x] Podpiąć ikony w `manifest.json`.
 - [x] Uporządkować README, jeśli po testach pojawią się niejasności instalacyjne.
 
 Kryterium ukończenia:
 
-- [ ] Repo ma podstawowe metadane projektu.
+- [x] Repo ma podstawowe metadane projektu.
 - [x] Firefox dalej ładuje rozszerzenie jako temporary add-on.
 - [x] `manifest.json`, `content.js` i `popup.js` przechodzą podstawową walidację.
 
