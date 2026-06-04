@@ -6,6 +6,8 @@ Czytanie i przeglądanie jest dozwolone. Pisanie jest blokowane tylko w skonfigu
 
 ## Instalacja
 
+Wymagany jest desktopowy Firefox 140 lub nowszy.
+
 1. Otwórz Firefox.
 2. Przejdź do `about:debugging`.
 3. Wybierz `This Firefox`.
@@ -70,6 +72,26 @@ Rozszerzenie działa lokalnie w Firefoksie.
 - Brak zbierania treści użytkownika.
 
 Lokalnie zapisywane są tylko ustawienia rozszerzenia i timestamp tymczasowego odblokowania.
+
+Manifest deklaruje `browser_specific_settings.gecko.data_collection_permissions.required` jako `none`, bo rozszerzenie nie zbiera ani nie wysyła danych użytkownika poza rozszerzenie.
+
+## Walidacja WebExtension
+
+Na razie projekt nie ma stałego `package.json`. `web-ext` jest uruchamiany jednorazowo przez `npx`, żeby nie dodawać narzędzi Node do projektu bez potrzeby.
+
+```powershell
+npx --yes web-ext@10.3.0 lint --source-dir .
+```
+
+Aktualnie oczekiwany wynik to `0 errors`. `web-ext` może pokazać ostrzeżenie Androidowe `KEY_FIREFOX_ANDROID_UNSUPPORTED_BY_MIN_VERSION`, ponieważ manifest deklaruje desktopowego Firefoksa i nie dodaje osobnej sekcji `gecko_android`.
+
+Podstawowa walidacja bez `web-ext`:
+
+```powershell
+Get-Content manifest.json -Raw | ConvertFrom-Json | Out-Null
+node --check content.js
+node --check popup.js
+```
 
 ## Testy Ręczne
 

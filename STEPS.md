@@ -53,16 +53,16 @@ Kryterium ukończenia:
 
 Zadania:
 
-- [ ] Dodać lokalną instrukcję użycia `web-ext`.
-- [ ] Uruchomić `web-ext lint`.
-- [ ] Poprawić błędy i ostrzeżenia z lintera.
-- [ ] Zdecydować, czy dodawać `package.json` wyłącznie dla narzędzi walidacyjnych.
+- [x] Dodać lokalną instrukcję użycia `web-ext`.
+- [x] Uruchomić `web-ext lint`.
+- [x] Poprawić błędy i opisać świadomie zaakceptowany warning Androidowy z lintera.
+- [x] Zdecydować, czy dodawać `package.json` wyłącznie dla narzędzi walidacyjnych.
 
 Kryterium ukończenia:
 
-- [ ] `web-ext lint` przechodzi bez błędów.
-- [ ] Znane ostrzeżenia są poprawione albo świadomie opisane.
-- [ ] Decyzja o `package.json` jest zapisana w README albo roadmapie.
+- [x] `web-ext lint` przechodzi bez błędów.
+- [x] Znane ostrzeżenia są poprawione albo świadomie opisane.
+- [x] Decyzja o `package.json` jest zapisana w README albo roadmapie.
 
 ## Faza 2a: Wersja Angielska
 
