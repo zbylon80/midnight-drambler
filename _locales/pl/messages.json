@@ -32,6 +32,23 @@
   "settingsLoadError": {
     "message": "Nie udało się wczytać ustawień."
   },
+  "blockerDisabledStatus": {
+    "message": "Blokada wyłączona"
+  },
+  "blockerActiveStatus": {
+    "message": "Blokada aktywna"
+  },
+  "outsideScheduleStatus": {
+    "message": "Poza godzinami blokady"
+  },
+  "emergencyUnlockedStatus": {
+    "message": "Odblokowane wyjątkowo. Pozostało: $MINUTES$ min.",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  },
   "defaultBlockMessage": {
     "message": "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać."
   },
@@ -60,7 +77,7 @@
     "message": "Odblokuj na 5 min"
   },
   "emergencyUnlockMismatchError": {
-    "message": "Zdanie musi być wpisane dokładnie tak samo."
+    "message": "Zdanie musi być wpisane dokładnie tak samo. Sprawdź wielkie litery, polskie znaki i spacje."
   },
   "countdownText": {
     "message": "Midnight Drambler wyłączony. Pozostało: $MINUTES$ min.",

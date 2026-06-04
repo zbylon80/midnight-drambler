@@ -27,6 +27,12 @@ Otwórz popup rozszerzenia z paska narzędzi Firefoxa.
 
 Ustawienia są przechowywane lokalnie przez `browser.storage.local`.
 
+Popup pokazuje też aktualny stan blokady:
+
+- `Blokada aktywna`
+- `Poza godzinami blokady`
+- `Odblokowane wyjątkowo` z licznikiem pozostałego czasu
+
 ## Języki
 
 Rozszerzenie obsługuje dwa języki:

@@ -10,7 +10,7 @@
     emergencyUnlockInputLabel: "Potwierdzenie odblokowania",
     backButton: "Wróć",
     emergencyUnlockSubmitButton: "Odblokuj na 5 min",
-    emergencyUnlockMismatchError: "Zdanie musi być wpisane dokładnie tak samo.",
+    emergencyUnlockMismatchError: "Zdanie musi być wpisane dokładnie tak samo. Sprawdź wielkie litery, polskie znaki i spacje.",
     countdownText: "Midnight Drambler wyłączony. Pozostało: $1 min."
   };
 

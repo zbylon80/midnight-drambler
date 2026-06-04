@@ -9,7 +9,11 @@ const FALLBACK_MESSAGES = {
   customMessageLabel: "Wiadomość",
   saveButton: "Zapisz",
   settingsSaved: "Zapisano.",
-  settingsLoadError: "Nie udało się wczytać ustawień."
+  settingsLoadError: "Nie udało się wczytać ustawień.",
+  blockerDisabledStatus: "Blokada wyłączona",
+  blockerActiveStatus: "Blokada aktywna",
+  outsideScheduleStatus: "Poza godzinami blokady",
+  emergencyUnlockedStatus: "Odblokowane wyjątkowo. Pozostało: $1 min."
 };
 
 const DEFAULT_LOCALE = "pl";
@@ -76,13 +80,17 @@ const startInput = document.querySelector("#start-time");
 const endInput = document.querySelector("#end-time");
 const messageInput = document.querySelector("#custom-message");
 const statusEl = document.querySelector("#status");
+const blockerStateEl = document.querySelector("#blocker-state");
+
+let currentSettings = null;
 
 function defaultSettings() {
   return {
     enabled: true,
     startTime: "00:00",
     endTime: "07:00",
-    message: i18n("defaultBlockMessage")
+    message: i18n("defaultBlockMessage"),
+    unlockUntil: 0
   };
 }
 
@@ -96,7 +104,8 @@ function normalizeSettings(values) {
     endTime: isTime(values.endTime) ? values.endTime : defaults.endTime,
     message: message && !KNOWN_DEFAULT_MESSAGES.includes(message)
       ? message
-      : defaults.message
+      : defaults.message,
+    unlockUntil: Number.isFinite(Number(values.unlockUntil)) ? Number(values.unlockUntil) : 0
   };
 }
 
@@ -107,28 +116,116 @@ function isTime(value) {
 async function loadSettings() {
   const values = await browser.storage.local.get(defaultSettings());
   const settings = normalizeSettings(values);
+  currentSettings = settings;
 
   enabledInput.checked = settings.enabled;
   startInput.value = settings.startTime;
   endInput.value = settings.endTime;
   messageInput.value = settings.message;
+  updateBlockerState();
 }
 
 async function saveSettings(event) {
   event.preventDefault();
 
+  const unlockUntil = currentSettings ? currentSettings.unlockUntil : 0;
   const settings = normalizeSettings({
     enabled: enabledInput.checked,
     startTime: startInput.value,
     endTime: endInput.value,
-    message: messageInput.value
+    message: messageInput.value,
+    unlockUntil
   });
 
-  await browser.storage.local.set(settings);
+  await browser.storage.local.set({
+    enabled: settings.enabled,
+    startTime: settings.startTime,
+    endTime: settings.endTime,
+    message: settings.message
+  });
+  currentSettings = settings;
+  updateBlockerState();
   statusEl.textContent = i18n("settingsSaved");
   window.setTimeout(() => {
     statusEl.textContent = "";
   }, 1800);
+}
+
+function minutesFromTime(value) {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+function isInsideBlockingWindow(settings, date = new Date()) {
+  const start = minutesFromTime(settings.startTime);
+  const end = minutesFromTime(settings.endTime);
+  const now = date.getHours() * 60 + date.getMinutes();
+
+  if (start === end) {
+    return true;
+  }
+
+  if (start < end) {
+    return now >= start && now < end;
+  }
+
+  return now >= start || now < end;
+}
+
+function remainingUnlockMinutes(settings) {
+  return Math.max(1, Math.ceil((settings.unlockUntil - Date.now()) / 60000));
+}
+
+function setBlockerState(text, modifier) {
+  blockerStateEl.textContent = text;
+  blockerStateEl.className = `blocker-state blocker-state--${modifier}`;
+}
+
+function updateBlockerState() {
+  if (!currentSettings) {
+    return;
+  }
+
+  if (!currentSettings.enabled) {
+    setBlockerState(i18n("blockerDisabledStatus"), "inactive");
+    return;
+  }
+
+  const insideWindow = isInsideBlockingWindow(currentSettings);
+  const unlocked = currentSettings.unlockUntil > Date.now();
+
+  if (insideWindow && unlocked) {
+    setBlockerState(i18n("emergencyUnlockedStatus", [String(remainingUnlockMinutes(currentSettings))]), "unlocked");
+    return;
+  }
+
+  if (insideWindow) {
+    setBlockerState(i18n("blockerActiveStatus"), "active");
+    return;
+  }
+
+  setBlockerState(i18n("outsideScheduleStatus"), "inactive");
+}
+
+function watchStorage() {
+  browser.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== "local" || !currentSettings) {
+      return;
+    }
+
+    const next = { ...currentSettings };
+
+    for (const [key, change] of Object.entries(changes)) {
+      next[key] = change.newValue;
+    }
+
+    currentSettings = normalizeSettings(next);
+    updateBlockerState();
+  });
+}
+
+function startStateTimer() {
+  window.setInterval(updateBlockerState, 1000);
 }
 
 function localizeDocument() {
@@ -143,6 +240,8 @@ async function initialize() {
   await loadLocale();
   localizeDocument();
   form.addEventListener("submit", saveSettings);
+  watchStorage();
+  startStateTimer();
   await loadSettings();
 }
 

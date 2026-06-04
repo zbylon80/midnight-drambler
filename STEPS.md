@@ -136,11 +136,11 @@ Kryterium ukończenia:
 
 Zadania:
 
-- [ ] Pokazać w popupie status `Blokada aktywna`.
-- [ ] Pokazać w popupie status `Poza godzinami blokady`.
-- [ ] Pokazać w popupie status `Odblokowane wyjątkowo`.
-- [ ] Pokazać countdown emergency unlock także w popupie.
-- [ ] Poprawić komunikaty błędu w ekranie emergency unlock.
+- [x] Pokazać w popupie status `Blokada aktywna`.
+- [x] Pokazać w popupie status `Poza godzinami blokady`.
+- [x] Pokazać w popupie status `Odblokowane wyjątkowo`.
+- [x] Pokazać countdown emergency unlock także w popupie.
+- [x] Poprawić komunikaty błędu w ekranie emergency unlock.
 - [ ] Sprawdzić overlay na mniejszych ekranach.
 - [ ] Sprawdzić kontrast i czytelność tekstu.
 

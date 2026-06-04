@@ -21,7 +21,7 @@ body {
 }
 
 .popup__header {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 h1 {
@@ -40,6 +40,35 @@ p {
 .settings {
   display: grid;
   gap: 14px;
+}
+
+.blocker-state {
+  min-height: 34px;
+  margin: 0 0 14px;
+  border: 1px solid #d4cec5;
+  border-radius: 8px;
+  background: #fffdfa;
+  color: #1f4f41;
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.blocker-state--active {
+  border-color: rgba(36, 107, 85, 0.32);
+  background: #edf7f2;
+}
+
+.blocker-state--inactive {
+  border-color: #ded8d0;
+  color: #5f5b54;
+}
+
+.blocker-state--unlocked {
+  border-color: rgba(36, 107, 85, 0.32);
+  background: #fff8e6;
 }
 
 label {

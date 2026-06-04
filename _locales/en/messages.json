@@ -32,6 +32,23 @@
   "settingsLoadError": {
     "message": "Could not load settings."
   },
+  "blockerDisabledStatus": {
+    "message": "Blocker disabled"
+  },
+  "blockerActiveStatus": {
+    "message": "Blocker active"
+  },
+  "outsideScheduleStatus": {
+    "message": "Outside blocking hours"
+  },
+  "emergencyUnlockedStatus": {
+    "message": "Emergency unlocked. Remaining: $MINUTES$ min.",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  },
   "defaultBlockMessage": {
     "message": "It is after midnight. In the morning you can decide whether you really want to send this."
   },
@@ -60,7 +77,7 @@
     "message": "Unlock for 5 min"
   },
   "emergencyUnlockMismatchError": {
-    "message": "The sentence must be typed exactly the same way."
+    "message": "The sentence must be typed exactly the same way. Check capitalization, spaces, and punctuation."
   },
   "countdownText": {
     "message": "Midnight Drambler disabled. Remaining: $MINUTES$ min.",
