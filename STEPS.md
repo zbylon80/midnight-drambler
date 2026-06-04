@@ -161,7 +161,7 @@ Zadania:
 - [x] Dodać prosty changelog i zasady wersjonowania.
 - [x] Wysłać pierwszą paczkę do AMO jako self-distributed / unlisted.
 - [x] Pobrać i przetestować podpisany plik `.xpi`.
-- [ ] Przygotować GitHub Release ZIP dopiero po zapisaniu decyzji o dystrybucji.
+- [x] Przygotować GitHub Release z podpisanym plikiem `.xpi` po zapisaniu decyzji o dystrybucji.
 - [x] Opisać, dlaczego Mozilla Add-ons może być potrzebne dla nietechnicznych użytkowników.
 
 Kryterium ukończenia:
@@ -170,13 +170,14 @@ Kryterium ukończenia:
 - [x] README nie sugeruje, że temporary add-on jest trwałą instalacją.
 - [x] Jest jasne, jak uzyskać podpisany plik `.xpi`.
 - [x] Wiadomo, kiedy podbijać wersję w `manifest.json`.
-- [ ] GitHub Release ZIP, jeśli powstanie, ma jasne przeznaczenie.
+- [x] GitHub Release ma jasne przeznaczenie i zawiera podpisany plik `.xpi` jako właściwy artefakt dla użytkownika.
 
 Notatki:
 
 - Wersja `0.1.0` została wysłana do AMO jako self-distributed / unlisted.
 - AMO automatycznie sprawdziło i zaakceptowało wersję `0.1.0`.
 - Podpisany plik `.xpi` został pobrany i uruchomiony w Firefoksie.
+- GitHub Release `v0.1.0` został opublikowany z podpisanym plikiem `.xpi`.
 - Dodatek może nadal zostać poddany późniejszemu ręcznemu review przez Mozilla Add-ons.
 
 ## Future Ideas Parking

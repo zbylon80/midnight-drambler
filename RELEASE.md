@@ -112,6 +112,18 @@ AMO może poprosić o dodatkowe informacje albo skierować dodatek do ręcznego 
 
 Po instalacji podpisany dodatek zostaje w Firefoksie po restarcie przeglądarki.
 
+## GitHub Release
+
+GitHub Release służy do udostępnienia podpisanego pliku `.xpi` znajomym albo testerom.
+
+Do release dodajemy podpisany `.xpi` pobrany z Mozilla Add-ons. Nie dodajemy ZIP-a z `web-ext-artifacts/`, bo ten ZIP jest paczką wejściową do AMO, a nie finalnym plikiem instalacyjnym dla użytkownika.
+
+Konwencja:
+
+- tag: `v0.1.0`
+- tytuł: `Midnight Drambler 0.1.0`
+- asset: podpisany plik `.xpi`
+
 ## Aktualizacje
 
 Dla każdej kolejnej wersji:

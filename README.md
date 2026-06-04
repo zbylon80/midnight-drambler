@@ -37,6 +37,8 @@ Ta ścieżka wymaga konta Mozilla/AMO i zaakceptowania zasad dystrybucji dodatk�
 
 Szczegółowa procedura pakowania i podpisywania jest w `RELEASE.md`.
 
+Podpisany plik `.xpi` dla wersji `0.1.0` jest udostępniony jako asset w GitHub Release `v0.1.0`.
+
 ## Wersjonowanie
 
 Wersja dodatku jest zapisana w `version` w `manifest.json`. To jest wersja widoczna dla Firefoksa i Mozilla Add-ons.

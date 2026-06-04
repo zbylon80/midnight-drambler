@@ -198,7 +198,7 @@ Zadania:
 - Dodać prosty changelog i zasady wersjonowania.
 - Wysłać pierwszą paczkę do AMO jako self-distributed / unlisted.
 - Pobrać i przetestować podpisany plik `.xpi`.
-- Przygotować GitHub Release ZIP dopiero po zapisaniu powyższej decyzji.
+- Przygotować GitHub Release z podpisanym plikiem `.xpi` dopiero po zapisaniu powyższej decyzji.
 - Opisać, dlaczego Mozilla Add-ons może być potrzebne dla nietechnicznych użytkowników.
 
 Kryterium ukończenia:
@@ -207,7 +207,7 @@ Kryterium ukończenia:
 - README nie sugeruje, że temporary add-on jest trwałą instalacją.
 - Jest jasne, jak uzyskać podpisany plik `.xpi`.
 - Wiadomo, kiedy podbijać wersję w `manifest.json`.
-- GitHub Release ZIP, jeśli powstanie, ma jasne przeznaczenie.
+- GitHub Release, jeśli powstanie, ma jasne przeznaczenie i zawiera podpisany plik `.xpi` jako właściwy artefakt dla użytkownika.
 
 ## Non-goals
 

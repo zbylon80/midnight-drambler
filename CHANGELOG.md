@@ -12,6 +12,7 @@ Status wydania:
 - Znany warning dotyczy Firefox Android i `data_collection_permissions`.
 - Wersja została automatycznie sprawdzona i zaakceptowana przez Mozilla Add-ons.
 - Podpisany plik `.xpi` został pobrany i uruchomiony w Firefoksie.
+- GitHub Release `v0.1.0` został opublikowany z podpisanym plikiem `.xpi`.
 - Dodatek może nadal zostać poddany późniejszemu ręcznemu review przez Mozilla Add-ons.
 
 Zakres:
