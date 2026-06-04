@@ -104,6 +104,15 @@ node --check content.js
 node --check popup.js
 ```
 
+## Znane Ograniczenia
+
+Facebook i Messenger często zmieniają strukturę DOM, więc blokowanie opiera się na heurystykach zamiast na stałych, kruchych selektorach.
+
+- Niektóre nowe pola pisania mogą wymagać dopracowania wykrywania.
+- Nietypowe pola wyszukiwania albo filtrowania mogą zostać błędnie uznane za pola pisania.
+- Aktywny countdown może zmienić język z krótkim opóźnieniem po zmianie języka Firefoksa.
+- Temporary add-on nadal wymaga przeładowania po restarcie Firefoksa.
+
 ## Testy Ręczne
 
 Przed testowaniem ustaw okno blokady tak, żeby aktualna godzina mieściła się w środku.

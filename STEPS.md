@@ -83,7 +83,7 @@ Zadania:
 
 Kryterium ukończenia:
 
-- [ ] Rozszerzenie działa po polsku i po angielsku.
+- [x] Rozszerzenie działa po polsku i po angielsku.
 - [x] Wszystkie komunikaty są przetłumaczone.
 - [x] Nie ma mieszania języków w interfejsie.
 - [x] Rozwiązanie wykorzystuje standardowe mechanizmy Firefoxa, jeśli są wystarczające.
@@ -92,44 +92,45 @@ Kryterium ukończenia:
 
 Scenariusze testowe:
 
-- [ ] Tworzenie posta na głównym feedzie Facebooka.
-- [ ] Tworzenie posta w grupie Facebooka.
-- [ ] Komentarze pod postami.
-- [ ] Odpowiedzi na komentarze.
-- [ ] Wiadomości na `messenger.com`.
-- [ ] Wiadomości przez Facebook Messages.
-- [ ] Wyszukiwarka Facebooka.
-- [ ] Wyszukiwarka Messengera.
-- [ ] Aktywacja blokady, gdy pole pisania jest już otwarte.
-- [ ] Emergency unlock i automatyczny powrót blokady po 5 minutach.
+- [x] Tworzenie posta na głównym feedzie Facebooka.
+- [x] Tworzenie posta w grupie Facebooka.
+- [x] Komentarze pod postami.
+- [x] Odpowiedzi na komentarze.
+- [x] Wiadomości na `messenger.com`.
+- [x] Wiadomości przez Facebook Messages.
+- [x] Wyszukiwarka Facebooka.
+- [x] Wyszukiwarka Messengera.
+- [x] Aktywacja blokady, gdy pole pisania jest już otwarte.
+- [x] Emergency unlock i automatyczny powrót blokady po 5 minutach.
 
 Kryterium ukończenia:
 
-- [ ] Pisanie i wysyłanie jest blokowane w głównych miejscach publikacji.
-- [ ] Czytanie, przewijanie, otwieranie profili, grup i rozmów nadal działa.
-- [ ] Wyszukiwarki nie są blokowane w typowych przypadkach.
-- [ ] Znane problemy są zapisane jako konkretne przypadki do poprawy.
+- [x] Pisanie i wysyłanie jest blokowane w głównych miejscach publikacji.
+- [x] Czytanie, przewijanie, otwieranie profili, grup i rozmów nadal działa.
+- [x] Wyszukiwarki nie są blokowane w typowych przypadkach.
+- [x] Znane problemy są zapisane jako konkretne przypadki do poprawy.
 
 Notatki z testów:
 
-- 
+- Testy ręczne Fazy 3 przeszły po hardeningu heurystyk.
+- Akceptowany edge case: aktywny countdown może zmienić język z krótkim opóźnieniem po zmianie języka Firefoksa.
 
 ## Faza 4: Utwardzenie Heurystyk Blokowania
 
 Zadania:
 
-- [ ] Poprawić wykrywanie pól pisania.
-- [ ] Poprawić wykrywanie przycisków wysyłania i publikacji, jeśli testy pokażą taką potrzebę.
-- [ ] Lepiej ignorować pola wyszukiwania, filtrowania i nawigacji.
-- [ ] Dodać throttling albo debouncing, jeśli `MutationObserver` okaże się zbyt kosztowny.
-- [ ] Udokumentować znane ograniczenia wynikające z dynamicznego DOM Facebooka.
+- [x] Poprawić wykrywanie pól pisania.
+- [x] Poprawić wykrywanie przycisków wysyłania i publikacji, jeśli testy pokażą taką potrzebę.
+- [x] Lepiej ignorować pola wyszukiwania, filtrowania i nawigacji.
+- [x] Dodać throttling albo debouncing, jeśli `MutationObserver` okaże się zbyt kosztowny.
+- [x] Udokumentować znane ograniczenia wynikające z dynamicznego DOM Facebooka.
 
 Kryterium ukończenia:
 
-- [ ] Blokowanie działa stabilnie po zmianie widoków bez odświeżania strony.
-- [ ] Nie ma zauważalnego spowolnienia Facebooka ani Messengera.
-- [ ] Fałszywe blokady są ograniczone do akceptowalnego minimum.
-- [ ] Znane ograniczenia są opisane prostym językiem.
+- [x] Blokowanie działa stabilnie po zmianie widoków bez odświeżania strony.
+- [x] Nie ma zauważalnego spowolnienia Facebooka ani Messengera.
+- [x] Fałszywe blokady są ograniczone do akceptowalnego minimum.
+- [x] Znane ograniczenia są opisane prostym językiem.
 
 ## Faza 5: Poprawki UX
 

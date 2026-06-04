@@ -76,6 +76,7 @@
   const UNLOCK_DURATION_MS = 5 * 60 * 1000;
   const LOCALE_CHECK_INTERVAL_MS = 1000;
   const CHECK_INTERVAL_MS = 30 * 1000;
+  const DOM_SCAN_DELAY_MS = 80;
 
   function defaultSettings() {
     return {
@@ -108,14 +109,29 @@
     "cerca"
   ];
 
-  const SUBMIT_ACTION_PATTERN = /\b(send|wyslij|opublikuj|publikuj|post|comment|skomentuj|reply|odpowiedz)\b/i;
-  const COMPOSER_TRIGGER_PATTERN = /(what'?s on your mind|o czym myslisz|co slychac|utworz post|create post|napisz cos|write something)/i;
+  const WRITING_WORDS = [
+    "message",
+    "wiadomosc",
+    "comment",
+    "komentarz",
+    "reply",
+    "odpowiedz",
+    "post",
+    "opublikuj",
+    "write",
+    "napisz"
+  ];
+
+  const SUBMIT_ACTION_PATTERN = /\b(send|wyslij|opublikuj|publikuj|post|comment|skomentuj|reply|odpowiedz|submit|publish)\b/i;
+  const COMPOSER_TRIGGER_PATTERN = /(what'?s on your mind|o czym myslisz|co slychac|utworz post|create post|napisz cos|write something|start a post)/i;
 
   let settings = { ...defaultSettings() };
   let overlayEl = null;
   let overlayMode = null;
   let countdownEl = null;
   let countdownTimer = 0;
+  let scanTimer = 0;
+  const pendingScanRoots = new Set();
 
   function removeExistingUi() {
     document
@@ -251,6 +267,24 @@
     return SEARCH_WORDS.some((word) => labels.includes(word));
   }
 
+  function isInNavigationContext(element) {
+    return Boolean(element.closest("nav, header, [role='navigation'], [role='banner']"));
+  }
+
+  function isLikelyWritingInput(element) {
+    if (!element.matches("input[type='text'], input:not([type])")) {
+      return true;
+    }
+
+    const labels = collectLabels(element);
+
+    if (WRITING_WORDS.some((word) => labels.includes(word))) {
+      return true;
+    }
+
+    return !isInNavigationContext(element);
+  }
+
   function findWritingTarget(target) {
     const element = getElement(target);
     if (!element || isInsideOwnUi(element)) {
@@ -261,7 +295,13 @@
       ? element
       : element.closest(WRITING_SELECTOR);
 
-    if (!editable || isInsideOwnUi(editable) || isDisabledOrReadonly(editable) || isSearchField(editable)) {
+    if (
+      !editable ||
+      isInsideOwnUi(editable) ||
+      isDisabledOrReadonly(editable) ||
+      isSearchField(editable) ||
+      !isLikelyWritingInput(editable)
+    ) {
       return null;
     }
 
@@ -285,7 +325,11 @@
     for (let depth = 0; current && depth < 7; depth += 1) {
       if (current.querySelectorAll) {
         const editors = Array.from(current.querySelectorAll(WRITING_SELECTOR));
-        if (editors.some((editor) => !isDisabledOrReadonly(editor) && !isSearchField(editor))) {
+        if (editors.some((editor) => (
+          !isDisabledOrReadonly(editor) &&
+          !isSearchField(editor) &&
+          isLikelyWritingInput(editor)
+        ))) {
           return true;
         }
       }
@@ -585,12 +629,40 @@
     editors.push(...root.querySelectorAll(WRITING_SELECTOR));
 
     for (const editor of editors) {
-      if (!isDisabledOrReadonly(editor) && !isSearchField(editor)) {
+      if (!isDisabledOrReadonly(editor) && !isSearchField(editor) && isLikelyWritingInput(editor)) {
         editor.dataset.midnightDramblerGuarded = "true";
       }
     }
 
     enforceActiveEditor();
+  }
+
+  function scheduleEditorScan(root) {
+    const element = getElement(root);
+    if (!element) {
+      return;
+    }
+
+    pendingScanRoots.add(element);
+
+    if (scanTimer) {
+      return;
+    }
+
+    scanTimer = window.setTimeout(() => {
+      scanTimer = 0;
+
+      if (!shouldBlock()) {
+        pendingScanRoots.clear();
+        return;
+      }
+
+      for (const scanRoot of pendingScanRoots) {
+        scanForEditors(scanRoot);
+      }
+
+      pendingScanRoots.clear();
+    }, DOM_SCAN_DELAY_MS);
   }
 
   async function loadSettings() {
@@ -627,9 +699,7 @@
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
           const element = getElement(node);
-          if (element) {
-            scanForEditors(element);
-          }
+          scheduleEditorScan(node);
         }
       }
     });
