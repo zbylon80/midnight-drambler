@@ -94,6 +94,14 @@ Aktualizuj dokumentację, jeśli zmiana wpływa na:
 - roadmapę,
 - zasady pracy agentów.
 
+## Wersjonowanie
+
+Źródłem wersji dodatku jest `version` w `manifest.json`.
+
+Nie podbijaj wersji przy każdym commicie. Wersję trzeba podbić wtedy, gdy przygotowywana jest nowa paczka do AMO albo GitHub Release.
+
+Jeśli zmieniasz `version` w `manifest.json`, zaktualizuj też `CHANGELOG.md`.
+
 ## UI I UX
 
 UI ma pozostać:

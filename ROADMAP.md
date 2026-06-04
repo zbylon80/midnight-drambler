@@ -195,6 +195,7 @@ Zadania:
 - Opisać w README różnicę między temporary add-on, ZIP z GitHuba i podpisanym dodatkiem.
 - Udokumentować decyzję, że celem jest podpisany dodatek do codziennego używania.
 - Przygotować proces pakowania ZIP/XPI.
+- Dodać prosty changelog i zasady wersjonowania.
 - Wysłać pierwszą paczkę do AMO jako self-distributed / unlisted.
 - Pobrać i przetestować podpisany plik `.xpi`.
 - Przygotować GitHub Release ZIP dopiero po zapisaniu powyższej decyzji.
@@ -205,6 +206,7 @@ Kryterium ukończenia:
 - Wiadomo, czy pierwsza dystrybucja jest tylko testerska, czy ma być wygodna dla znajomych.
 - README nie sugeruje, że temporary add-on jest trwałą instalacją.
 - Jest jasne, jak uzyskać podpisany plik `.xpi`.
+- Wiadomo, kiedy podbijać wersję w `manifest.json`.
 - GitHub Release ZIP, jeśli powstanie, ma jasne przeznaczenie.
 
 ## Non-goals

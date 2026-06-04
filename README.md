@@ -35,6 +35,22 @@ Planowany proces:
 
 Ta ścieżka wymaga konta Mozilla/AMO i zaakceptowania zasad dystrybucji dodatków. Projekt nie zbiera danych użytkownika, więc deklaracja prywatności powinna pozostać prosta: brak telemetrii, brak analityki, brak zewnętrznych requestów.
 
+Szczegółowa procedura pakowania i podpisywania jest w `RELEASE.md`.
+
+## Wersjonowanie
+
+Wersja dodatku jest zapisana w `version` w `manifest.json`. To jest wersja widoczna dla Firefoksa i Mozilla Add-ons.
+
+Na etapie MVP używamy prostego schematu:
+
+- `0.1.x` - poprawki błędów, heurystyk, tekstów i procesu wydania,
+- `0.2.x` - nowe małe funkcje albo widoczne zmiany UX,
+- `1.0.0` - dopiero gdy rozszerzenie jest sprawdzone w codziennym użyciu i ma stabilny proces instalacji.
+
+Każda kolejna paczka wysyłana do AMO musi mieć nową, wyższą wersję w `manifest.json`. Same commity dokumentacyjne nie wymagają podbijania wersji, dopóki nie przygotowujemy nowego ZIP-a do podpisania.
+
+Historia wersji jest w `CHANGELOG.md`.
+
 ## Konfiguracja
 
 Otwórz popup rozszerzenia z paska narzędzi Firefoxa.
