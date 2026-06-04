@@ -1,121 +1,159 @@
 # Midnight Drambler
 
-Midnight Drambler is a local Firefox extension that creates a late-night pause before posting or sending on Facebook and Messenger.
+Midnight Drambler to lokalne rozszerzenie Firefoxa, które tworzy nocną pauzę przed pisaniem, wysyłaniem i publikowaniem na Facebooku oraz Messengerze.
 
-Reading and browsing are allowed. Writing is blocked only during the configured time window.
+Czytanie i przeglądanie jest dozwolone. Pisanie jest blokowane tylko w skonfigurowanym oknie czasowym.
 
-## Installation
+## Instalacja
 
-1. Open Firefox
-2. Navigate to `about:debugging`
-3. Select "This Firefox"
-4. Click "Load Temporary Add-on"
-5. Select `manifest.json`
+1. Otwórz Firefox.
+2. Przejdź do `about:debugging`.
+3. Wybierz `This Firefox`.
+4. Kliknij `Load Temporary Add-on`.
+5. Wybierz `manifest.json` z katalogu projektu.
 
-## Configuration
+Uwaga: temporary add-on znika po restarcie Firefoksa. Ten tryb jest dobry do testowania i developmentu, ale nie jest wygodną trwałą instalacją dla nietechnicznych użytkowników.
 
-Open the extension popup from the Firefox toolbar.
+## Konfiguracja
 
-- Enable or disable the blocker with `Włącz blokadę`.
-- Set `Od` and `Do` to choose the blocking hours. Windows that cross midnight are supported, for example `00:00` to `07:00`.
-- Change `Wiadomość` to customize the blocking overlay text.
-- Click `Zapisz`.
+Otwórz popup rozszerzenia z paska narzędzi Firefoxa.
 
-Settings are stored locally with `browser.storage.local`.
+- Włącz lub wyłącz blokadę opcją `Włącz blokadę`.
+- Ustaw `Od` i `Do`, żeby wybrać godziny blokowania. Okna przechodzące przez północ są obsługiwane, np. `00:00` do `07:00`.
+- Zmień `Wiadomość`, jeśli chcesz dostosować tekst overlay.
+- Kliknij `Zapisz`.
 
-## Behavior
+Ustawienia są przechowywane lokalnie przez `browser.storage.local`.
 
-When blocking is active, Midnight Drambler blocks writing areas on:
+## Zachowanie
+
+Gdy blokada jest aktywna, Midnight Drambler blokuje pola pisania na:
 
 - `facebook.com`
 - `messenger.com`
 
-It targets common writing controls such as:
+Rozszerzenie celuje w typowe kontrolki pisania:
 
 - `textarea`
 - `[contenteditable="true"]`
 - `[role="textbox"]`
 - `input[type="text"]`
 
-Search fields are skipped when they can be recognized from input type, role, label, placeholder, or nearby search containers.
+Pola wyszukiwania są pomijane, jeśli da się je rozpoznać po typie pola, roli, etykiecie, placeholderze albo pobliskim kontenerze wyszukiwania.
 
 ## Emergency Unlock
 
-When the overlay appears, click `Odblokuj wyjątkowo`.
+Gdy pojawi się overlay blokady, kliknij `Odblokuj wyjątkowo`.
 
-To unlock, type exactly:
+Żeby odblokować, wpisz dokładnie:
 
 ```text
 JUTRO TEŻ BĘDĘ CHCIAŁ TO WYSŁAĆ
 ```
 
-If the phrase matches exactly, blocking is disabled for 15 minutes and a visible countdown appears:
+Jeśli fraza pasuje dokładnie, blokada zostaje wyłączona na 15 minut i pojawia się widoczny licznik:
 
 ```text
 Midnight Drambler wyłączony. Pozostało: 14 min.
 ```
 
-After 15 minutes, blocking returns automatically if the current time is still inside the configured blocking window.
+Po 15 minutach blokada wraca automatycznie, jeśli aktualna godzina nadal mieści się w skonfigurowanym oknie blokowania.
 
-## Privacy
+## Prywatność
 
-The extension runs locally in Firefox.
+Rozszerzenie działa lokalnie w Firefoksie.
 
-- No backend
-- No analytics
-- No telemetry
-- No external requests
-- No user content collection
+- Brak backendu.
+- Brak analityki.
+- Brak telemetrii.
+- Brak zewnętrznych requestów.
+- Brak zbierania treści użytkownika.
 
-Only extension settings and the temporary unlock timestamp are stored locally.
+Lokalnie zapisywane są tylko ustawienia rozszerzenia i timestamp tymczasowego odblokowania.
 
-## Manual Tests
+## Testy Ręczne
 
-Before testing, set the blocking window so that the current time is inside it.
+Przed testowaniem ustaw okno blokady tak, żeby aktualna godzina mieściła się w środku.
 
-### Facebook post creation
+### Tworzenie posta na Facebooku
 
-1. Open `facebook.com`.
-2. Click the post composer.
-3. Confirm that the Midnight Drambler overlay appears.
-4. Confirm that typing is not accepted.
+1. Otwórz `facebook.com`.
+2. Kliknij composer posta na głównym feedzie.
+3. Sprawdź, czy pojawia się overlay Midnight Drambler.
+4. Sprawdź, czy wpisywanie tekstu jest blokowane.
 
-### Facebook comments
+### Tworzenie posta w grupie Facebooka
 
-1. Open a Facebook feed post.
-2. Click a comment text field.
-3. Confirm that the overlay appears.
-4. Confirm that typing and paste are blocked.
+1. Otwórz dowolną grupę na Facebooku.
+2. Kliknij pole tworzenia posta w grupie.
+3. Sprawdź, czy pojawia się overlay.
+4. Sprawdź, czy nie da się wpisać ani wkleić treści.
 
-### Facebook group replies
+### Komentarze na Facebooku
 
-1. Open a Facebook group.
-2. Try to reply to a post or comment.
-3. Confirm that the overlay appears.
-4. Confirm that the reply cannot be written.
+1. Otwórz post na feedzie albo w grupie.
+2. Kliknij pole komentarza.
+3. Sprawdź, czy pojawia się overlay.
+4. Sprawdź, czy wpisywanie i wklejanie są blokowane.
 
-### Messenger messages
+### Odpowiedzi na komentarze
 
-1. Open `messenger.com`.
-2. Open any conversation.
-3. Click the message composer.
-4. Confirm that the overlay appears.
-5. Confirm that typing, paste, and sending are blocked.
+1. Otwórz post z komentarzami.
+2. Kliknij `Odpowiedz` przy komentarzu.
+3. Spróbuj wpisać odpowiedź.
+4. Sprawdź, czy overlay blokuje pisanie.
+
+### Messenger na `messenger.com`
+
+1. Otwórz `messenger.com`.
+2. Otwórz dowolną rozmowę.
+3. Kliknij composer wiadomości.
+4. Sprawdź, czy pojawia się overlay.
+5. Sprawdź, czy wpisywanie, wklejanie i wysyłanie są blokowane.
+
+### Facebook Messages
+
+1. Otwórz wiadomości przez Facebooka, np. `facebook.com/messages`.
+2. Otwórz dowolną rozmowę.
+3. Kliknij composer wiadomości.
+4. Sprawdź, czy overlay blokuje pisanie i wysyłanie.
+
+### Wyszukiwarka Facebooka
+
+1. Otwórz `facebook.com`.
+2. Kliknij pole wyszukiwania.
+3. Wpisz tekst testowy.
+4. Sprawdź, czy wyszukiwarka nie jest blokowana.
+
+### Wyszukiwarka Messengera
+
+1. Otwórz `messenger.com`.
+2. Kliknij pole wyszukiwania rozmów.
+3. Wpisz tekst testowy.
+4. Sprawdź, czy wyszukiwarka nie jest blokowana.
+
+### Aktywacja przy otwartym polu pisania
+
+1. Ustaw harmonogram tak, żeby blokada miała się zaraz aktywować.
+2. Otwórz pole pisania przed aktywacją blokady.
+3. Poczekaj, aż aktualna godzina wejdzie w okno blokowania.
+4. Spróbuj pisać dalej.
+5. Sprawdź, czy blokada przejmuje aktywne pole.
 
 ### Emergency unlock
 
-1. Trigger the blocking overlay.
-2. Click `Odblokuj wyjątkowo`.
-3. Type anything except the required phrase.
-4. Confirm that unlocking is rejected.
-5. Type `JUTRO TEŻ BĘDĘ CHCIAŁ TO WYSŁAĆ` exactly.
-6. Confirm that the overlay closes and the countdown appears.
-7. Confirm that writing is allowed while the countdown is active.
+1. Wywołaj overlay blokady.
+2. Kliknij `Odblokuj wyjątkowo`.
+3. Wpisz cokolwiek poza wymaganą frazą.
+4. Sprawdź, czy odblokowanie zostaje odrzucone.
+5. Wpisz dokładnie `JUTRO TEŻ BĘDĘ CHCIAŁ TO WYSŁAĆ`.
+6. Sprawdź, czy overlay znika i pojawia się countdown.
+7. Sprawdź, czy pisanie jest dozwolone, gdy countdown jest aktywny.
 
-### Automatic relock after 15 minutes
+### Automatyczny powrót blokady po 15 minutach
 
-1. Complete the emergency unlock flow.
-2. Keep the current time inside the configured blocking window.
-3. Wait 15 minutes.
-4. Click a writing field again.
-5. Confirm that the overlay returns and writing is blocked.
+1. Przejdź flow emergency unlock.
+2. Zostaw aktualną godzinę wewnątrz skonfigurowanego okna blokowania.
+3. Poczekaj 15 minut.
+4. Kliknij pole pisania ponownie.
+5. Sprawdź, czy overlay wraca i pisanie jest blokowane.
