@@ -78,6 +78,7 @@
   const LOCALE_CHECK_INTERVAL_MS = 1000;
   const CHECK_INTERVAL_MS = 30 * 1000;
   const DOM_SCAN_DELAY_MS = 80;
+  const USER_INTENT_GRACE_MS = 1500;
 
   function defaultSettings() {
     return {
@@ -129,9 +130,11 @@
   let settings = { ...defaultSettings() };
   let overlayEl = null;
   let overlayMode = null;
+  let overlayRequestId = 0;
   let countdownEl = null;
   let countdownTimer = 0;
   let scanTimer = 0;
+  let lastUserIntentAt = 0;
   const pendingScanRoots = new Set();
 
   function removeExistingUi() {
@@ -206,6 +209,16 @@
 
   function isInsideOwnUi(element) {
     return Boolean(element && element.closest("#midnight-drambler-overlay, #midnight-drambler-countdown"));
+  }
+
+  function noteUserIntent(event) {
+    if (event.isTrusted) {
+      lastUserIntentAt = Date.now();
+    }
+  }
+
+  function hasRecentUserIntent() {
+    return Date.now() - lastUserIntentAt <= USER_INTENT_GRACE_MS;
   }
 
   function isEditableElement(element) {
@@ -378,6 +391,10 @@
       return;
     }
 
+    if (!hasRecentUserIntent()) {
+      return;
+    }
+
     const target = findWritingTarget(event.target);
     if (target) {
       blockEvent(event, target);
@@ -385,6 +402,8 @@
   }
 
   function handleInputAttempt(event) {
+    noteUserIntent(event);
+
     if (!shouldBlock()) {
       return;
     }
@@ -396,6 +415,8 @@
   }
 
   function handleKeydown(event) {
+    noteUserIntent(event);
+
     if (!shouldBlock()) {
       return;
     }
@@ -407,6 +428,8 @@
   }
 
   function handleClick(event) {
+    noteUserIntent(event);
+
     if (!shouldBlock()) {
       return;
     }
@@ -423,21 +446,38 @@
     }
   }
 
-  function closeOverlay() {
+  function removeOverlay() {
     document.querySelectorAll("#midnight-drambler-overlay").forEach((element) => element.remove());
     overlayEl = null;
     overlayMode = null;
   }
 
-  async function showOverlay(mode) {
+  function closeOverlay() {
+    overlayRequestId += 1;
+    removeOverlay();
+  }
+
+  async function showOverlay(mode, options = {}) {
+    const requestId = overlayRequestId + 1;
+    overlayRequestId = requestId;
+
     await refreshLocale().catch(() => false);
+
+    if (requestId !== overlayRequestId) {
+      return;
+    }
+
     settings = normalizeSettings(settings);
 
     if (!shouldBlock() && mode !== "confirm") {
       return;
     }
 
-    closeOverlay();
+    if (!options.force && overlayEl && overlayEl.isConnected && overlayMode === mode) {
+      return;
+    }
+
+    removeOverlay();
     overlayMode = mode;
 
     overlayEl = document.createElement("div");
@@ -612,7 +652,6 @@
     const activeTarget = findWritingTarget(document.activeElement);
     if (activeTarget) {
       activeTarget.blur();
-      showOverlay("blocked");
     }
   }
 
@@ -740,7 +779,7 @@
         updateCountdown();
 
         if (overlayEl && overlayMode) {
-          showOverlay(overlayMode);
+          showOverlay(overlayMode, { force: true });
         }
       }).catch(() => {});
     }, LOCALE_CHECK_INTERVAL_MS);

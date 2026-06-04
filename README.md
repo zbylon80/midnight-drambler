@@ -160,6 +160,13 @@ Facebook i Messenger często zmieniają strukturę DOM, więc blokowanie opiera 
 
 Przed testowaniem ustaw okno blokady tak, żeby aktualna godzina mieściła się w środku.
 
+### Ładowanie Facebooka bez interakcji
+
+1. Otwórz `facebook.com` w czasie aktywnej blokady.
+2. Nie klikaj pól pisania ani przycisków publikowania.
+3. Sprawdź, czy overlay Midnight Drambler nie pojawia się samoczynnie podczas ładowania strony.
+4. Kliknij composer posta i sprawdź, czy overlay pojawia się dopiero po tej próbie pisania.
+
 ### Tworzenie posta na Facebooku
 
 1. Otwórz `facebook.com`.
