@@ -36,9 +36,9 @@ Notatki:
 
 Zadania:
 
-- [ ] Dodać `LICENSE`.
-- [ ] Dodać `.gitignore`.
-- [ ] Dodać `.gitattributes`.
+- [x] Dodać `LICENSE`.
+- [x] Dodać `.gitignore`.
+- [x] Dodać `.gitattributes`.
 - [ ] Dodać ikony rozszerzenia.
 - [ ] Podpiąć ikony w `manifest.json`.
 - [x] Uporządkować README, jeśli po testach pojawią się niejasności instalacyjne.

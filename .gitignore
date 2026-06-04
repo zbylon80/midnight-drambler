@@ -1,0 +1,19 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Node tooling, if validation tooling is added later
+node_modules/
+npm-debug.log*
+
+# Firefox WebExtension tooling output
+web-ext-artifacts/
+.web-extension-id
+
+# Local Codex logs
+.codex-log/
