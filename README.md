@@ -18,13 +18,13 @@ Uwaga: temporary add-on znika po restarcie Firefoksa. Ten tryb jest dobry do tes
 
 ## Trwała Instalacja
 
-Do codziennego używania planowana jest podpisana wersja rozszerzenia przez Mozilla Add-ons.
+Do codziennego używania używana jest podpisana wersja rozszerzenia przez Mozilla Add-ons.
 
 ZIP z GitHuba jest przydatny do pobrania kodu, testowania albo developmentu, ale sam w sobie nie jest wygodną trwałą instalacją. Jeśli ZIP zostanie załadowany przez `about:debugging` jako temporary add-on, rozszerzenie nadal zniknie po restarcie Firefoksa.
 
 Preferowana ścieżka to `unlisted` / `self-distributed`, czyli dodatek podpisany przez Mozillę, ale niewidoczny publicznie w katalogu AMO. Taki plik `.xpi` można zainstalować na stałe z pliku i nie znika on po restarcie Firefoksa.
 
-Planowany proces:
+Proces dla pierwszej instalacji albo kolejnej wersji:
 
 1. Zwiększyć `version` w `manifest.json`.
 2. Uruchomić walidację lokalną.

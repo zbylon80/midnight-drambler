@@ -160,7 +160,7 @@ Zadania:
 - [x] Przygotować proces pakowania ZIP/XPI.
 - [x] Dodać prosty changelog i zasady wersjonowania.
 - [x] Wysłać pierwszą paczkę do AMO jako self-distributed / unlisted.
-- [ ] Pobrać i przetestować podpisany plik `.xpi`.
+- [x] Pobrać i przetestować podpisany plik `.xpi`.
 - [ ] Przygotować GitHub Release ZIP dopiero po zapisaniu decyzji o dystrybucji.
 - [x] Opisać, dlaczego Mozilla Add-ons może być potrzebne dla nietechnicznych użytkowników.
 
@@ -175,8 +175,9 @@ Kryterium ukończenia:
 Notatki:
 
 - Wersja `0.1.0` została wysłana do AMO jako self-distributed / unlisted.
-- Status po wysłaniu: `Awaiting Review`.
-- Do domknięcia zostaje pobranie i przetestowanie podpisanego `.xpi`.
+- AMO automatycznie sprawdziło i zaakceptowało wersję `0.1.0`.
+- Podpisany plik `.xpi` został pobrany i uruchomiony w Firefoksie.
+- Dodatek może nadal zostać poddany późniejszemu ręcznemu review przez Mozilla Add-ons.
 
 ## Future Ideas Parking
 

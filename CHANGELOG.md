@@ -6,11 +6,13 @@ Wersja dodatku jest brana z `version` w `manifest.json`.
 
 Pierwsza wersja MVP wysłana do Mozilla Add-ons jako `self-distributed` / `unlisted`.
 
-Status po wysłaniu:
+Status wydania:
 
 - AMO validation: `0 errors`, `1 warning`.
 - Znany warning dotyczy Firefox Android i `data_collection_permissions`.
-- Wersja czeka na review/podpisanie przez Mozilla Add-ons.
+- Wersja została automatycznie sprawdzona i zaakceptowana przez Mozilla Add-ons.
+- Podpisany plik `.xpi` został pobrany i uruchomiony w Firefoksie.
+- Dodatek może nadal zostać poddany późniejszemu ręcznemu review przez Mozilla Add-ons.
 
 Zakres:
 
