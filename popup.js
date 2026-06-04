@@ -1,23 +1,23 @@
 const FALLBACK_MESSAGES = {
   extensionName: "Midnight Drambler",
-  defaultBlockMessage: "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.",
-  htmlLang: "pl",
-  popupTagline: "Nocna pauza przed wysłaniem.",
-  enableBlockerLabel: "Włącz blokadę",
-  startTimeLabel: "Od",
-  endTimeLabel: "Do",
-  customMessageLabel: "Wiadomość",
-  saveButton: "Zapisz",
-  settingsSaved: "Zapisano.",
-  settingsLoadError: "Nie udało się wczytać ustawień.",
-  blockerDisabledStatus: "Blokada wyłączona",
-  blockerActiveStatus: "Blokada aktywna",
-  outsideScheduleStatus: "Poza godzinami blokady",
-  emergencyUnlockedStatus: "Odblokowane wyjątkowo. Pozostało: $1 min."
+  defaultBlockMessage: "It is after midnight. In the morning you can decide whether you really want to send this.",
+  htmlLang: "en",
+  popupTagline: "A late-night pause before sending.",
+  enableBlockerLabel: "Enable blocker",
+  startTimeLabel: "From",
+  endTimeLabel: "To",
+  customMessageLabel: "Message",
+  saveButton: "Save",
+  settingsSaved: "Saved.",
+  settingsLoadError: "Could not load settings.",
+  blockerDisabledStatus: "Blocker disabled",
+  blockerActiveStatus: "Blocker active",
+  outsideScheduleStatus: "Outside blocking hours",
+  emergencyUnlockedStatus: "Emergency unlocked. Remaining: $1 min."
 };
 
-const DEFAULT_LOCALE = "pl";
-const SUPPORTED_LOCALES = ["pl", "en"];
+const DEFAULT_LOCALE = "en";
+const POLISH_LOCALE = "pl";
 const KNOWN_DEFAULT_MESSAGES = [
   "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.",
   "It is after midnight. In the morning you can decide whether you really want to send this."
@@ -48,15 +48,16 @@ function i18n(key, substitutions) {
 }
 
 function getPreferredLocale() {
-  const languages = [
-    navigator.language,
-    ...(navigator.languages || []),
-    browser.i18n.getUILanguage()
-  ].filter(Boolean).map((language) => language.toLowerCase());
+  const language = (
+    navigator.language ||
+    (navigator.languages && navigator.languages[0]) ||
+    browser.i18n.getUILanguage() ||
+    ""
+  ).toLowerCase();
 
-  return SUPPORTED_LOCALES.find((locale) => (
-    languages.some((language) => language === locale || language.startsWith(`${locale}-`))
-  )) || DEFAULT_LOCALE;
+  return language === POLISH_LOCALE || language.startsWith(`${POLISH_LOCALE}-`)
+    ? POLISH_LOCALE
+    : DEFAULT_LOCALE;
 }
 
 async function loadLocale() {

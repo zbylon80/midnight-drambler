@@ -86,6 +86,7 @@ Kryterium ukończenia:
 - [x] Rozszerzenie działa po polsku i po angielsku.
 - [x] Wszystkie komunikaty są przetłumaczone.
 - [x] Nie ma mieszania języków w interfejsie.
+- [x] Dla języków innych niż polski rozszerzenie używa angielskiego.
 - [x] Rozwiązanie wykorzystuje standardowe mechanizmy Firefoxa, jeśli są wystarczające.
 
 ## Faza 3: Testy Ręczne Na Facebooku I Messengerze
@@ -141,29 +142,32 @@ Zadania:
 - [x] Pokazać w popupie status `Odblokowane wyjątkowo`.
 - [x] Pokazać countdown emergency unlock także w popupie.
 - [x] Poprawić komunikaty błędu w ekranie emergency unlock.
-- [ ] Sprawdzić overlay na mniejszych ekranach.
-- [ ] Sprawdzić kontrast i czytelność tekstu.
+- [x] Sprawdzić overlay na mniejszych ekranach.
+- [x] Sprawdzić kontrast i czytelność tekstu.
 
 Kryterium ukończenia:
 
-- [ ] Popup jasno pokazuje aktualny stan.
-- [ ] Overlay nie zasłania więcej niż musi, ale skutecznie zatrzymuje pisanie.
-- [ ] Emergency unlock jest zrozumiały bez instrukcji z README.
+- [x] Popup jasno pokazuje aktualny stan.
+- [x] Overlay nie zasłania więcej niż musi, ale skutecznie zatrzymuje pisanie.
+- [x] Emergency unlock jest zrozumiały bez instrukcji z README.
 
 ## Faza 6: Strategia Wydania
 
 Zadania:
 
-- [ ] Opisać w README różnicę między temporary add-on, ZIP z GitHuba i podpisanym dodatkiem.
-- [ ] Udokumentować decyzję, czy na tym etapie wystarcza instalacja developerska.
+- [x] Opisać w README różnicę między temporary add-on, ZIP z GitHuba i podpisanym dodatkiem.
+- [x] Udokumentować decyzję, że celem jest podpisane rozszerzenie przez Mozilla Add-ons.
+- [ ] Przygotować proces pakowania ZIP/XPI.
+- [ ] Wysłać pierwszą paczkę do AMO jako self-distributed / unlisted.
+- [ ] Pobrać i przetestować podpisany plik `.xpi`.
 - [ ] Przygotować GitHub Release ZIP dopiero po zapisaniu decyzji o dystrybucji.
-- [ ] Zostawić Mozilla Add-ons jako opcję na później.
-- [ ] Opisać, dlaczego Mozilla Add-ons może być potrzebne dla nietechnicznych użytkowników.
+- [x] Opisać, dlaczego Mozilla Add-ons może być potrzebne dla nietechnicznych użytkowników.
 
 Kryterium ukończenia:
 
-- [ ] Wiadomo, czy pierwsza dystrybucja jest tylko testerska, czy ma być wygodna dla znajomych.
-- [ ] README nie sugeruje, że temporary add-on jest trwałą instalacją.
+- [x] Wiadomo, że pierwsza trwała dystrybucja ma być podpisanym dodatkiem do codziennego używania.
+- [x] README nie sugeruje, że temporary add-on jest trwałą instalacją.
+- [x] Jest jasne, jak uzyskać podpisany plik `.xpi`.
 - [ ] GitHub Release ZIP, jeśli powstanie, ma jasne przeznaczenie.
 
 ## Future Ideas Parking

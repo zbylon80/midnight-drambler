@@ -106,9 +106,11 @@ UI ma pozostać:
 
 ## Języki
 
-Domyślnym językiem projektu jest polski.
+Dokumentacja projektu i rozmowy robocze są prowadzone po polsku, chyba że użytkownik poprosi inaczej.
 
-Planowana jest angielska wersja jako osobny etap w `ROADMAP.md`. Nie planujemy ogólnej platformy wielojęzycznej. Dodatkowe języki mogą trafić do `Future Ideas`, jeśli pojawi się realna potrzeba.
+Rozszerzenie obsługuje tylko dwa języki: polski i angielski. Firefox w języku `pl` albo `pl-*` powinien dostać polski interfejs. Wszystkie pozostałe języki powinny używać angielskiego fallbacku.
+
+Nie planujemy ogólnej platformy wielojęzycznej. Dodatkowe języki mogą trafić do `Future Ideas`, jeśli pojawi się realna potrzeba.
 
 ## Quizy I Doprecyzowania
 

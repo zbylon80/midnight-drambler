@@ -84,6 +84,8 @@ Cel: przygotować pierwszą angielską wersję rozszerzenia.
 
 Na tym etapie planujemy tylko dwa języki: polski i angielski. Pełna internacjonalizacja jest świadomie poza zakresem, bo projekt ma pozostać prosty. Dodatkowe języki można rozważyć później, jeśli pojawi się realne zapotrzebowanie.
 
+Reguła wyboru języka jest prosta: Firefox w języku `pl` albo `pl-*` dostaje polski interfejs, a wszystkie pozostałe języki dostają angielski. Angielski jest domyślnym fallbackiem.
+
 Zadania:
 
 - Oddzielić teksty UI od logiki.
@@ -109,6 +111,7 @@ Kryterium ukończenia:
 - Rozszerzenie działa po polsku i po angielsku.
 - Wszystkie komunikaty są przetłumaczone.
 - Nie ma mieszania języków w interfejsie.
+- Dla wszystkich języków innych niż polski rozszerzenie używa angielskiego.
 - Rozwiązanie wykorzystuje standardowe mechanizmy Firefoxa, jeśli okażą się wystarczające.
 
 ## Faza 3: Testy Ręczne Na Facebooku I Messengerze
@@ -181,23 +184,27 @@ Cel: zdecydować, jak realnie udostępniać rozszerzenie znajomym.
 
 GitHub ZIP jest przydatny dla deweloperów i testów, ale temporary add-on w Firefoksie znika po restarcie przeglądarki. To jest dobre do developmentu, niekoniecznie do wygodnego używania przez nietechniczne osoby.
 
-Decyzja do podjęcia:
+Decyzja:
 
-- Kontynuować wyłącznie instalację developerską przez `about:debugging`.
-- Albo przygotować podpisane rozszerzenie przez Mozilla Add-ons.
+- Przygotować podpisane rozszerzenie przez Mozilla Add-ons.
+- Preferować dystrybucję `unlisted` / `self-distributed`, czyli podpisany plik `.xpi` bez publicznego listingu w katalogu AMO.
+- Temporary add-on zostaje tylko trybem developerskim.
 
 Zadania:
 
 - Opisać w README różnicę między temporary add-on, ZIP z GitHuba i podpisanym dodatkiem.
-- Udokumentować decyzję, czy na tym etapie wystarcza instalacja developerska.
+- Udokumentować decyzję, że celem jest podpisany dodatek do codziennego używania.
+- Przygotować proces pakowania ZIP/XPI.
+- Wysłać pierwszą paczkę do AMO jako self-distributed / unlisted.
+- Pobrać i przetestować podpisany plik `.xpi`.
 - Przygotować GitHub Release ZIP dopiero po zapisaniu powyższej decyzji.
-- Zostawić Mozilla Add-ons jako opcję na później.
 - Opisać, dlaczego Mozilla Add-ons może być potrzebne dla nietechnicznych użytkowników.
 
 Kryterium ukończenia:
 
 - Wiadomo, czy pierwsza dystrybucja jest tylko testerska, czy ma być wygodna dla znajomych.
 - README nie sugeruje, że temporary add-on jest trwałą instalacją.
+- Jest jasne, jak uzyskać podpisany plik `.xpi`.
 - GitHub Release ZIP, jeśli powstanie, ma jasne przeznaczenie.
 
 ## Non-goals
@@ -239,8 +246,6 @@ Uwaga: `Harden Facebook and Messenger composer detection` jest celowo przed `Doc
 
 - Licencja: rekomendowane MIT, bo projekt ma być prosty do udostępniania znajomym oraz prywatnego i niekomercyjnego użycia. Brak licencji oznacza domyślnie "all rights reserved", co może utrudniać ponowne użycie nawet w małym projekcie hobbystycznym.
 - Czy dodawać `package.json` tylko dla `web-ext`, czy zostawić projekt bez Node tooling.
-- Czy na razie wystarcza temporary add-on przez `about:debugging`.
-- Czy przygotowywać podpisane rozszerzenie przez Mozilla Add-ons.
 - Rekomendowane: dodać szybki `Force Blocking Mode` / `Tryb testowy blokady` w popupie, żeby można było testować blokowanie bez czekania na skonfigurowane okno nocne.
 
 ## Future Ideas

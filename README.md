@@ -16,6 +16,25 @@ Wymagany jest desktopowy Firefox 140 lub nowszy.
 
 Uwaga: temporary add-on znika po restarcie Firefoksa. Ten tryb jest dobry do testowania i developmentu, ale nie jest wygodną trwałą instalacją dla nietechnicznych użytkowników.
 
+## Trwała Instalacja
+
+Do codziennego używania planowana jest podpisana wersja rozszerzenia przez Mozilla Add-ons.
+
+ZIP z GitHuba jest przydatny do pobrania kodu, testowania albo developmentu, ale sam w sobie nie jest wygodną trwałą instalacją. Jeśli ZIP zostanie załadowany przez `about:debugging` jako temporary add-on, rozszerzenie nadal zniknie po restarcie Firefoksa.
+
+Preferowana ścieżka to `unlisted` / `self-distributed`, czyli dodatek podpisany przez Mozillę, ale niewidoczny publicznie w katalogu AMO. Taki plik `.xpi` można zainstalować na stałe z pliku i nie znika on po restarcie Firefoksa.
+
+Planowany proces:
+
+1. Zwiększyć `version` w `manifest.json`.
+2. Uruchomić walidację lokalną.
+3. Spakować rozszerzenie do ZIP/XPI.
+4. Wysłać paczkę do AMO jako self-distributed / unlisted.
+5. Pobrać podpisany plik `.xpi`.
+6. Zainstalować go w Firefoksie przez `about:addons` -> zębatka -> `Install Add-on From File`.
+
+Ta ścieżka wymaga konta Mozilla/AMO i zaakceptowania zasad dystrybucji dodatków. Projekt nie zbiera danych użytkownika, więc deklaracja prywatności powinna pozostać prosta: brak telemetrii, brak analityki, brak zewnętrznych requestów.
+
 ## Konfiguracja
 
 Otwórz popup rozszerzenia z paska narzędzi Firefoxa.
@@ -40,7 +59,7 @@ Rozszerzenie obsługuje dwa języki:
 - polski
 - angielski
 
-Język jest wybierany automatycznie przez natywny mechanizm lokalizacji Firefox WebExtensions (`_locales`) na podstawie języka Firefoksa. Na tym etapie nie ma ręcznego przełącznika języka w ustawieniach.
+Język jest wybierany automatycznie przez natywny mechanizm lokalizacji Firefox WebExtensions (`_locales`) na podstawie języka Firefoksa. Jeśli język Firefoksa zaczyna się od `pl`, rozszerzenie działa po polsku. Dla wszystkich pozostałych języków używany jest angielski. Na tym etapie nie ma ręcznego przełącznika języka w ustawieniach.
 
 Popup, overlay i countdown odczytują aktualny język Firefoksa w czasie działania dodatku. Nazwa i opis dodatku widoczne w samym Firefoxie pochodzą z manifestu i mogą wymagać przeładowania dodatku po zmianie języka przeglądarki.
 

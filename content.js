@@ -1,21 +1,21 @@
 (() => {
   const FALLBACK_MESSAGES = {
     extensionName: "Midnight Drambler",
-    defaultBlockMessage: "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.",
-    closeButton: "Zamknij",
-    emergencyUnlockButton: "Odblokuj wyjątkowo",
-    emergencyUnlockTitle: "Odblokowanie wyjątkowe",
-    emergencyUnlockIntro: "Jeśli to naprawdę pilne, przepisz dokładnie zdanie poniżej.",
-    emergencyUnlockPhrase: "JUTRO TEŻ BĘDĘ CHCIAŁ TO WYSŁAĆ",
-    emergencyUnlockInputLabel: "Potwierdzenie odblokowania",
-    backButton: "Wróć",
-    emergencyUnlockSubmitButton: "Odblokuj na 5 min",
-    emergencyUnlockMismatchError: "Zdanie musi być wpisane dokładnie tak samo. Sprawdź wielkie litery, polskie znaki i spacje.",
-    countdownText: "Midnight Drambler wyłączony. Pozostało: $1 min."
+    defaultBlockMessage: "It is after midnight. In the morning you can decide whether you really want to send this.",
+    closeButton: "Close",
+    emergencyUnlockButton: "Emergency unlock",
+    emergencyUnlockTitle: "Emergency unlock",
+    emergencyUnlockIntro: "If this is truly urgent, type the exact sentence below.",
+    emergencyUnlockPhrase: "I WILL STILL WANT TO SEND THIS TOMORROW",
+    emergencyUnlockInputLabel: "Unlock confirmation",
+    backButton: "Back",
+    emergencyUnlockSubmitButton: "Unlock for 5 min",
+    emergencyUnlockMismatchError: "The sentence must be typed exactly the same way. Check capitalization, spaces, and punctuation.",
+    countdownText: "Midnight Drambler disabled. Remaining: $1 min."
   };
 
-  const DEFAULT_LOCALE = "pl";
-  const SUPPORTED_LOCALES = ["pl", "en"];
+  const DEFAULT_LOCALE = "en";
+  const POLISH_LOCALE = "pl";
   const KNOWN_DEFAULT_MESSAGES = [
     "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.",
     "It is after midnight. In the morning you can decide whether you really want to send this."
@@ -46,15 +46,16 @@
   }
 
   function getPreferredLocale() {
-    const languages = [
-      navigator.language,
-      ...(navigator.languages || []),
-      browser.i18n.getUILanguage()
-    ].filter(Boolean).map((language) => language.toLowerCase());
+    const language = (
+      navigator.language ||
+      (navigator.languages && navigator.languages[0]) ||
+      browser.i18n.getUILanguage() ||
+      ""
+    ).toLowerCase();
 
-    return SUPPORTED_LOCALES.find((locale) => (
-      languages.some((language) => language === locale || language.startsWith(`${locale}-`))
-    )) || DEFAULT_LOCALE;
+    return language === POLISH_LOCALE || language.startsWith(`${POLISH_LOCALE}-`)
+      ? POLISH_LOCALE
+      : DEFAULT_LOCALE;
   }
 
   async function refreshLocale() {
