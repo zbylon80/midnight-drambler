@@ -1,11 +1,74 @@
-const DEFAULT_MESSAGE = "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.";
-
-const DEFAULT_SETTINGS = {
-  enabled: true,
-  startTime: "00:00",
-  endTime: "07:00",
-  message: DEFAULT_MESSAGE
+const FALLBACK_MESSAGES = {
+  extensionName: "Midnight Drambler",
+  defaultBlockMessage: "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.",
+  htmlLang: "pl",
+  popupTagline: "Nocna pauza przed wysłaniem.",
+  enableBlockerLabel: "Włącz blokadę",
+  startTimeLabel: "Od",
+  endTimeLabel: "Do",
+  customMessageLabel: "Wiadomość",
+  saveButton: "Zapisz",
+  settingsSaved: "Zapisano.",
+  settingsLoadError: "Nie udało się wczytać ustawień."
 };
+
+const DEFAULT_LOCALE = "pl";
+const SUPPORTED_LOCALES = ["pl", "en"];
+const KNOWN_DEFAULT_MESSAGES = [
+  "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.",
+  "It is after midnight. In the morning you can decide whether you really want to send this."
+];
+
+let localeMessages = {};
+let currentLocale = "";
+
+function i18n(key, substitutions) {
+  const entry = localeMessages[key];
+  const nativeMessage = browser.i18n.getMessage(key, substitutions);
+  const template = entry && entry.message
+    ? entry.message
+    : nativeMessage || FALLBACK_MESSAGES[key] || key;
+  const values = Array.isArray(substitutions) ? substitutions : [substitutions];
+
+  let text = template.replace(/\$(\d+)/g, (_, index) => values[Number(index) - 1] || "");
+
+  if (entry && entry.placeholders) {
+    for (const [name, placeholder] of Object.entries(entry.placeholders)) {
+      const match = /^\$(\d+)$/.exec(placeholder.content);
+      const value = match ? values[Number(match[1]) - 1] || "" : placeholder.content;
+      text = text.replace(new RegExp(`\\$${name}\\$`, "gi"), value);
+    }
+  }
+
+  return text;
+}
+
+function getPreferredLocale() {
+  const languages = [
+    navigator.language,
+    ...(navigator.languages || []),
+    browser.i18n.getUILanguage()
+  ].filter(Boolean).map((language) => language.toLowerCase());
+
+  return SUPPORTED_LOCALES.find((locale) => (
+    languages.some((language) => language === locale || language.startsWith(`${locale}-`))
+  )) || DEFAULT_LOCALE;
+}
+
+async function loadLocale() {
+  const nextLocale = getPreferredLocale();
+  if (nextLocale === currentLocale && Object.keys(localeMessages).length) {
+    return;
+  }
+
+  const response = await fetch(browser.runtime.getURL(`_locales/${nextLocale}/messages.json`));
+  if (!response.ok) {
+    throw new Error(`Could not load locale: ${nextLocale}`);
+  }
+
+  localeMessages = await response.json();
+  currentLocale = nextLocale;
+}
 
 const form = document.querySelector("#settings-form");
 const enabledInput = document.querySelector("#enabled");
@@ -14,14 +77,26 @@ const endInput = document.querySelector("#end-time");
 const messageInput = document.querySelector("#custom-message");
 const statusEl = document.querySelector("#status");
 
+function defaultSettings() {
+  return {
+    enabled: true,
+    startTime: "00:00",
+    endTime: "07:00",
+    message: i18n("defaultBlockMessage")
+  };
+}
+
 function normalizeSettings(values) {
+  const defaults = defaultSettings();
+  const message = typeof values.message === "string" ? values.message.trim() : "";
+
   return {
     enabled: Boolean(values.enabled),
-    startTime: isTime(values.startTime) ? values.startTime : DEFAULT_SETTINGS.startTime,
-    endTime: isTime(values.endTime) ? values.endTime : DEFAULT_SETTINGS.endTime,
-    message: typeof values.message === "string" && values.message.trim()
-      ? values.message
-      : DEFAULT_SETTINGS.message
+    startTime: isTime(values.startTime) ? values.startTime : defaults.startTime,
+    endTime: isTime(values.endTime) ? values.endTime : defaults.endTime,
+    message: message && !KNOWN_DEFAULT_MESSAGES.includes(message)
+      ? message
+      : defaults.message
   };
 }
 
@@ -30,7 +105,7 @@ function isTime(value) {
 }
 
 async function loadSettings() {
-  const values = await browser.storage.local.get(DEFAULT_SETTINGS);
+  const values = await browser.storage.local.get(defaultSettings());
   const settings = normalizeSettings(values);
 
   enabledInput.checked = settings.enabled;
@@ -50,13 +125,28 @@ async function saveSettings(event) {
   });
 
   await browser.storage.local.set(settings);
-  statusEl.textContent = "Zapisano.";
+  statusEl.textContent = i18n("settingsSaved");
   window.setTimeout(() => {
     statusEl.textContent = "";
   }, 1800);
 }
 
-form.addEventListener("submit", saveSettings);
-loadSettings().catch(() => {
-  statusEl.textContent = "Nie udało się wczytać ustawień.";
+function localizeDocument() {
+  document.documentElement.lang = i18n("htmlLang");
+
+  for (const element of document.querySelectorAll("[data-i18n]")) {
+    element.textContent = i18n(element.dataset.i18n);
+  }
+}
+
+async function initialize() {
+  await loadLocale();
+  localizeDocument();
+  form.addEventListener("submit", saveSettings);
+  await loadSettings();
+}
+
+initialize().catch(() => {
+  localizeDocument();
+  statusEl.textContent = i18n("settingsLoadError");
 });

@@ -27,6 +27,17 @@ Otwórz popup rozszerzenia z paska narzędzi Firefoxa.
 
 Ustawienia są przechowywane lokalnie przez `browser.storage.local`.
 
+## Języki
+
+Rozszerzenie obsługuje dwa języki:
+
+- polski
+- angielski
+
+Język jest wybierany automatycznie przez natywny mechanizm lokalizacji Firefox WebExtensions (`_locales`) na podstawie języka Firefoksa. Na tym etapie nie ma ręcznego przełącznika języka w ustawieniach.
+
+Popup, overlay i countdown odczytują aktualny język Firefoksa w czasie działania dodatku. Nazwa i opis dodatku widoczne w samym Firefoxie pochodzą z manifestu i mogą wymagać przeładowania dodatku po zmianie języka przeglądarki.
+
 ## Zachowanie
 
 Gdy blokada jest aktywna, Midnight Drambler blokuje pola pisania na:
@@ -53,13 +64,13 @@ Gdy pojawi się overlay blokady, kliknij `Odblokuj wyjątkowo`.
 JUTRO TEŻ BĘDĘ CHCIAŁ TO WYSŁAĆ
 ```
 
-Jeśli fraza pasuje dokładnie, blokada zostaje wyłączona na 15 minut i pojawia się widoczny licznik:
+Jeśli fraza pasuje dokładnie, blokada zostaje wyłączona na 5 minut i pojawia się widoczny licznik:
 
 ```text
-Midnight Drambler wyłączony. Pozostało: 14 min.
+Midnight Drambler wyłączony. Pozostało: 5 min.
 ```
 
-Po 15 minutach blokada wraca automatycznie, jeśli aktualna godzina nadal mieści się w skonfigurowanym oknie blokowania.
+Po 5 minutach blokada wraca automatycznie, jeśli aktualna godzina nadal mieści się w skonfigurowanym oknie blokowania.
 
 ## Prywatność
 
@@ -172,10 +183,10 @@ Przed testowaniem ustaw okno blokady tak, żeby aktualna godzina mieściła się
 6. Sprawdź, czy overlay znika i pojawia się countdown.
 7. Sprawdź, czy pisanie jest dozwolone, gdy countdown jest aktywny.
 
-### Automatyczny powrót blokady po 15 minutach
+### Automatyczny powrót blokady po 5 minutach
 
 1. Przejdź flow emergency unlock.
 2. Zostaw aktualną godzinę wewnątrz skonfigurowanego okna blokowania.
-3. Poczekaj 15 minut.
+3. Poczekaj 5 minut.
 4. Kliknij pole pisania ponownie.
 5. Sprawdź, czy overlay wraca i pisanie jest blokowane.

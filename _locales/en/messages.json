@@ -1,0 +1,73 @@
+{
+  "extensionName": {
+    "message": "Midnight Drambler"
+  },
+  "extensionDescription": {
+    "message": "A local late-night writing blocker for Facebook and Messenger."
+  },
+  "htmlLang": {
+    "message": "en"
+  },
+  "popupTagline": {
+    "message": "A late-night pause before sending."
+  },
+  "enableBlockerLabel": {
+    "message": "Enable blocker"
+  },
+  "startTimeLabel": {
+    "message": "From"
+  },
+  "endTimeLabel": {
+    "message": "To"
+  },
+  "customMessageLabel": {
+    "message": "Message"
+  },
+  "saveButton": {
+    "message": "Save"
+  },
+  "settingsSaved": {
+    "message": "Saved."
+  },
+  "settingsLoadError": {
+    "message": "Could not load settings."
+  },
+  "defaultBlockMessage": {
+    "message": "It is after midnight. In the morning you can decide whether you really want to send this."
+  },
+  "closeButton": {
+    "message": "Close"
+  },
+  "emergencyUnlockButton": {
+    "message": "Emergency unlock"
+  },
+  "emergencyUnlockTitle": {
+    "message": "Emergency unlock"
+  },
+  "emergencyUnlockIntro": {
+    "message": "If this is truly urgent, type the exact sentence below."
+  },
+  "emergencyUnlockPhrase": {
+    "message": "I WILL STILL WANT TO SEND THIS TOMORROW"
+  },
+  "emergencyUnlockInputLabel": {
+    "message": "Unlock confirmation"
+  },
+  "backButton": {
+    "message": "Back"
+  },
+  "emergencyUnlockSubmitButton": {
+    "message": "Unlock for 5 min"
+  },
+  "emergencyUnlockMismatchError": {
+    "message": "The sentence must be typed exactly the same way."
+  },
+  "countdownText": {
+    "message": "Midnight Drambler disabled. Remaining: $MINUTES$ min.",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  }
+}

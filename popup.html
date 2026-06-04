@@ -3,40 +3,40 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Midnight Drambler</title>
+    <title data-i18n="extensionName">Midnight Drambler</title>
     <link rel="stylesheet" href="popup.css">
   </head>
   <body>
     <main class="popup">
       <header class="popup__header">
-        <h1>Midnight Drambler</h1>
-        <p>Nocna pauza przed wysłaniem.</p>
+        <h1 data-i18n="extensionName">Midnight Drambler</h1>
+        <p data-i18n="popupTagline">Nocna pauza przed wysłaniem.</p>
       </header>
 
       <form id="settings-form" class="settings">
         <label class="toggle">
           <input id="enabled" type="checkbox">
-          <span>Włącz blokadę</span>
+          <span data-i18n="enableBlockerLabel">Włącz blokadę</span>
         </label>
 
         <div class="time-grid">
           <label>
-            <span>Od</span>
+            <span data-i18n="startTimeLabel">Od</span>
             <input id="start-time" type="time" required>
           </label>
 
           <label>
-            <span>Do</span>
+            <span data-i18n="endTimeLabel">Do</span>
             <input id="end-time" type="time" required>
           </label>
         </div>
 
         <label>
-          <span>Wiadomość</span>
+          <span data-i18n="customMessageLabel">Wiadomość</span>
           <textarea id="custom-message" rows="4"></textarea>
         </label>
 
-        <button type="submit">Zapisz</button>
+        <button type="submit" data-i18n="saveButton">Zapisz</button>
         <p id="status" class="status" role="status" aria-live="polite"></p>
       </form>
     </main>

@@ -1,0 +1,73 @@
+{
+  "extensionName": {
+    "message": "Midnight Drambler"
+  },
+  "extensionDescription": {
+    "message": "Lokalna blokada nocnego pisania na Facebooku i Messengerze."
+  },
+  "htmlLang": {
+    "message": "pl"
+  },
+  "popupTagline": {
+    "message": "Nocna pauza przed wysłaniem."
+  },
+  "enableBlockerLabel": {
+    "message": "Włącz blokadę"
+  },
+  "startTimeLabel": {
+    "message": "Od"
+  },
+  "endTimeLabel": {
+    "message": "Do"
+  },
+  "customMessageLabel": {
+    "message": "Wiadomość"
+  },
+  "saveButton": {
+    "message": "Zapisz"
+  },
+  "settingsSaved": {
+    "message": "Zapisano."
+  },
+  "settingsLoadError": {
+    "message": "Nie udało się wczytać ustawień."
+  },
+  "defaultBlockMessage": {
+    "message": "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać."
+  },
+  "closeButton": {
+    "message": "Zamknij"
+  },
+  "emergencyUnlockButton": {
+    "message": "Odblokuj wyjątkowo"
+  },
+  "emergencyUnlockTitle": {
+    "message": "Odblokowanie wyjątkowe"
+  },
+  "emergencyUnlockIntro": {
+    "message": "Jeśli to naprawdę pilne, przepisz dokładnie zdanie poniżej."
+  },
+  "emergencyUnlockPhrase": {
+    "message": "JUTRO TEŻ BĘDĘ CHCIAŁ TO WYSŁAĆ"
+  },
+  "emergencyUnlockInputLabel": {
+    "message": "Potwierdzenie odblokowania"
+  },
+  "backButton": {
+    "message": "Wróć"
+  },
+  "emergencyUnlockSubmitButton": {
+    "message": "Odblokuj na 5 min"
+  },
+  "emergencyUnlockMismatchError": {
+    "message": "Zdanie musi być wpisane dokładnie tak samo."
+  },
+  "countdownText": {
+    "message": "Midnight Drambler wyłączony. Pozostało: $MINUTES$ min.",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  }
+}

@@ -126,7 +126,7 @@ Scenariusze testowe:
 - Wyszukiwarka Facebooka.
 - Wyszukiwarka Messengera.
 - Aktywacja blokady, gdy pole pisania jest już otwarte.
-- Emergency unlock i automatyczny powrót blokady po 15 minutach.
+- Emergency unlock i automatyczny powrót blokady po 5 minutach.
 
 Kryterium ukończenia:
 

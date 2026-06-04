@@ -1,16 +1,91 @@
 (() => {
-  const DEFAULT_MESSAGE = "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.";
-  const UNLOCK_PHRASE = "JUTRO TEŻ BĘDĘ CHCIAŁ TO WYSŁAĆ";
-  const UNLOCK_DURATION_MS = 15 * 60 * 1000;
+  const FALLBACK_MESSAGES = {
+    extensionName: "Midnight Drambler",
+    defaultBlockMessage: "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.",
+    closeButton: "Zamknij",
+    emergencyUnlockButton: "Odblokuj wyjątkowo",
+    emergencyUnlockTitle: "Odblokowanie wyjątkowe",
+    emergencyUnlockIntro: "Jeśli to naprawdę pilne, przepisz dokładnie zdanie poniżej.",
+    emergencyUnlockPhrase: "JUTRO TEŻ BĘDĘ CHCIAŁ TO WYSŁAĆ",
+    emergencyUnlockInputLabel: "Potwierdzenie odblokowania",
+    backButton: "Wróć",
+    emergencyUnlockSubmitButton: "Odblokuj na 5 min",
+    emergencyUnlockMismatchError: "Zdanie musi być wpisane dokładnie tak samo.",
+    countdownText: "Midnight Drambler wyłączony. Pozostało: $1 min."
+  };
+
+  const DEFAULT_LOCALE = "pl";
+  const SUPPORTED_LOCALES = ["pl", "en"];
+  const KNOWN_DEFAULT_MESSAGES = [
+    "Jest po północy. Rano zdecydujesz, czy naprawdę chcesz to wysłać.",
+    "It is after midnight. In the morning you can decide whether you really want to send this."
+  ];
+
+  let localeMessages = {};
+  let currentLocale = "";
+
+  function i18n(key, substitutions) {
+    const entry = localeMessages[key];
+    const nativeMessage = browser.i18n.getMessage(key, substitutions);
+    const template = entry && entry.message
+      ? entry.message
+      : nativeMessage || FALLBACK_MESSAGES[key] || key;
+    const values = Array.isArray(substitutions) ? substitutions : [substitutions];
+
+    let text = template.replace(/\$(\d+)/g, (_, index) => values[Number(index) - 1] || "");
+
+    if (entry && entry.placeholders) {
+      for (const [name, placeholder] of Object.entries(entry.placeholders)) {
+        const match = /^\$(\d+)$/.exec(placeholder.content);
+        const value = match ? values[Number(match[1]) - 1] || "" : placeholder.content;
+        text = text.replace(new RegExp(`\\$${name}\\$`, "gi"), value);
+      }
+    }
+
+    return text;
+  }
+
+  function getPreferredLocale() {
+    const languages = [
+      navigator.language,
+      ...(navigator.languages || []),
+      browser.i18n.getUILanguage()
+    ].filter(Boolean).map((language) => language.toLowerCase());
+
+    return SUPPORTED_LOCALES.find((locale) => (
+      languages.some((language) => language === locale || language.startsWith(`${locale}-`))
+    )) || DEFAULT_LOCALE;
+  }
+
+  async function refreshLocale() {
+    const nextLocale = getPreferredLocale();
+    if (nextLocale === currentLocale && Object.keys(localeMessages).length) {
+      return false;
+    }
+
+    const response = await fetch(browser.runtime.getURL(`_locales/${nextLocale}/messages.json`));
+    if (!response.ok) {
+      throw new Error(`Could not load locale: ${nextLocale}`);
+    }
+
+    localeMessages = await response.json();
+    currentLocale = nextLocale;
+    return true;
+  }
+
+  const UNLOCK_DURATION_MS = 5 * 60 * 1000;
+  const LOCALE_CHECK_INTERVAL_MS = 1000;
   const CHECK_INTERVAL_MS = 30 * 1000;
 
-  const DEFAULT_SETTINGS = {
-    enabled: true,
-    startTime: "00:00",
-    endTime: "07:00",
-    message: DEFAULT_MESSAGE,
-    unlockUntil: 0
-  };
+  function defaultSettings() {
+    return {
+      enabled: true,
+      startTime: "00:00",
+      endTime: "07:00",
+      message: i18n("defaultBlockMessage"),
+      unlockUntil: 0
+    };
+  }
 
   const WRITING_SELECTOR = [
     "textarea",
@@ -36,23 +111,33 @@
   const SUBMIT_ACTION_PATTERN = /\b(send|wyslij|opublikuj|publikuj|post|comment|skomentuj|reply|odpowiedz)\b/i;
   const COMPOSER_TRIGGER_PATTERN = /(what'?s on your mind|o czym myslisz|co slychac|utworz post|create post|napisz cos|write something)/i;
 
-  let settings = { ...DEFAULT_SETTINGS };
+  let settings = { ...defaultSettings() };
   let overlayEl = null;
+  let overlayMode = null;
   let countdownEl = null;
   let countdownTimer = 0;
+
+  function removeExistingUi() {
+    document
+      .querySelectorAll("#midnight-drambler-overlay, #midnight-drambler-countdown")
+      .forEach((element) => element.remove());
+  }
 
   function isTime(value) {
     return typeof value === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
   }
 
   function normalizeSettings(values) {
+    const defaults = defaultSettings();
+    const message = typeof values.message === "string" ? values.message.trim() : "";
+
     return {
       enabled: Boolean(values.enabled),
-      startTime: isTime(values.startTime) ? values.startTime : DEFAULT_SETTINGS.startTime,
-      endTime: isTime(values.endTime) ? values.endTime : DEFAULT_SETTINGS.endTime,
-      message: typeof values.message === "string" && values.message.trim()
-        ? values.message
-        : DEFAULT_SETTINGS.message,
+      startTime: isTime(values.startTime) ? values.startTime : defaults.startTime,
+      endTime: isTime(values.endTime) ? values.endTime : defaults.endTime,
+      message: message && !KNOWN_DEFAULT_MESSAGES.includes(message)
+        ? message
+        : defaults.message,
       unlockUntil: Number.isFinite(Number(values.unlockUntil)) ? Number(values.unlockUntil) : 0
     };
   }
@@ -294,18 +379,21 @@
   }
 
   function closeOverlay() {
-    if (overlayEl) {
-      overlayEl.remove();
-      overlayEl = null;
-    }
+    document.querySelectorAll("#midnight-drambler-overlay").forEach((element) => element.remove());
+    overlayEl = null;
+    overlayMode = null;
   }
 
-  function showOverlay(mode) {
+  async function showOverlay(mode) {
+    await refreshLocale().catch(() => false);
+    settings = normalizeSettings(settings);
+
     if (!shouldBlock() && mode !== "confirm") {
       return;
     }
 
     closeOverlay();
+    overlayMode = mode;
 
     overlayEl = document.createElement("div");
     overlayEl.id = "midnight-drambler-overlay";
@@ -330,7 +418,7 @@
 
   function renderBlockedDialog(dialog) {
     const title = document.createElement("h2");
-    title.textContent = "Midnight Drambler";
+    title.textContent = i18n("extensionName");
 
     const message = document.createElement("p");
     message.textContent = settings.message;
@@ -341,13 +429,13 @@
     const closeButton = document.createElement("button");
     closeButton.type = "button";
     closeButton.className = "midnight-drambler-button midnight-drambler-button--secondary";
-    closeButton.textContent = "Zamknij";
+    closeButton.textContent = i18n("closeButton");
     closeButton.addEventListener("click", closeOverlay);
 
     const unlockButton = document.createElement("button");
     unlockButton.type = "button";
     unlockButton.className = "midnight-drambler-button midnight-drambler-button--primary";
-    unlockButton.textContent = "Odblokuj wyjątkowo";
+    unlockButton.textContent = i18n("emergencyUnlockButton");
     unlockButton.addEventListener("click", () => showOverlay("confirm"));
 
     actions.append(closeButton, unlockButton);
@@ -357,14 +445,14 @@
 
   function renderConfirmDialog(dialog) {
     const title = document.createElement("h2");
-    title.textContent = "Odblokowanie wyjątkowe";
+    title.textContent = i18n("emergencyUnlockTitle");
 
     const intro = document.createElement("p");
-    intro.textContent = "Jeśli to naprawdę pilne, przepisz dokładnie zdanie poniżej.";
+    intro.textContent = i18n("emergencyUnlockIntro");
 
     const phrase = document.createElement("strong");
     phrase.className = "midnight-drambler-phrase";
-    phrase.textContent = UNLOCK_PHRASE;
+    phrase.textContent = i18n("emergencyUnlockPhrase");
 
     const form = document.createElement("form");
     form.className = "midnight-drambler-confirmation";
@@ -373,7 +461,7 @@
     input.type = "text";
     input.autocomplete = "off";
     input.spellcheck = false;
-    input.setAttribute("aria-label", "Potwierdzenie odblokowania");
+    input.setAttribute("aria-label", i18n("emergencyUnlockInputLabel"));
 
     const error = document.createElement("p");
     error.className = "midnight-drambler-error";
@@ -385,13 +473,13 @@
     const backButton = document.createElement("button");
     backButton.type = "button";
     backButton.className = "midnight-drambler-button midnight-drambler-button--secondary";
-    backButton.textContent = "Wróć";
+    backButton.textContent = i18n("backButton");
     backButton.addEventListener("click", () => showOverlay("blocked"));
 
     const submitButton = document.createElement("button");
     submitButton.type = "submit";
     submitButton.className = "midnight-drambler-button midnight-drambler-button--primary";
-    submitButton.textContent = "Odblokuj na 15 min";
+    submitButton.textContent = i18n("emergencyUnlockSubmitButton");
 
     actions.append(backButton, submitButton);
     form.append(input, error, actions);
@@ -400,8 +488,8 @@
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      if (input.value !== UNLOCK_PHRASE) {
-        error.textContent = "Zdanie musi być wpisane dokładnie tak samo.";
+      if (input.value !== i18n("emergencyUnlockPhrase")) {
+        error.textContent = i18n("emergencyUnlockMismatchError");
         return;
       }
 
@@ -428,7 +516,7 @@
       return;
     }
 
-    countdownEl.textContent = `Midnight Drambler wyłączony. Pozostało: ${remainingMinutes()} min.`;
+    countdownEl.textContent = i18n("countdownText", [String(remainingMinutes())]);
   }
 
   function hideCountdown() {
@@ -437,10 +525,8 @@
       countdownTimer = 0;
     }
 
-    if (countdownEl) {
-      countdownEl.remove();
-      countdownEl = null;
-    }
+    document.querySelectorAll("#midnight-drambler-countdown").forEach((element) => element.remove());
+    countdownEl = null;
   }
 
   function updateCountdown() {
@@ -449,11 +535,13 @@
       return;
     }
 
-    if (!countdownEl) {
-      countdownEl = document.createElement("div");
+    if (!countdownEl || !countdownEl.isConnected) {
+      countdownEl = document.getElementById("midnight-drambler-countdown") || document.createElement("div");
       countdownEl.id = "midnight-drambler-countdown";
       countdownEl.setAttribute("role", "status");
-      document.documentElement.append(countdownEl);
+      if (!countdownEl.isConnected) {
+        document.documentElement.append(countdownEl);
+      }
     }
 
     updateCountdownText();
@@ -506,7 +594,7 @@
   }
 
   async function loadSettings() {
-    const values = await browser.storage.local.get(DEFAULT_SETTINGS);
+    const values = await browser.storage.local.get(defaultSettings());
     settings = normalizeSettings(values);
     updateCountdown();
     enforceActiveEditor();
@@ -570,11 +658,33 @@
     }, CHECK_INTERVAL_MS);
   }
 
+  function startLocaleLoop() {
+    window.setInterval(() => {
+      refreshLocale().then((changed) => {
+        if (!changed) {
+          return;
+        }
+
+        settings = normalizeSettings(settings);
+        updateCountdown();
+
+        if (overlayEl && overlayMode) {
+          showOverlay(overlayMode);
+        }
+      }).catch(() => {});
+    }, LOCALE_CHECK_INTERVAL_MS);
+  }
+
+  removeExistingUi();
   installEventGuards();
   watchStorage();
   watchDom();
   startScheduleLoop();
-  loadSettings().then(() => scanForEditors()).catch(() => {
-    settings = { ...DEFAULT_SETTINGS };
-  });
+  startLocaleLoop();
+  refreshLocale()
+    .then(loadSettings)
+    .then(() => scanForEditors())
+    .catch(() => {
+      settings = { ...defaultSettings() };
+    });
 })();

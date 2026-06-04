@@ -68,25 +68,25 @@ Kryterium ukończenia:
 
 Zadania:
 
-- [ ] Oddzielić teksty UI od logiki.
-- [ ] Przygotować obsługę języka polskiego.
-- [ ] Przygotować obsługę języka angielskiego.
-- [ ] Przetłumaczyć teksty popupu.
-- [ ] Przetłumaczyć teksty overlay.
-- [ ] Przetłumaczyć teksty emergency unlock.
-- [ ] Przetłumaczyć countdown.
-- [ ] Przetłumaczyć komunikaty błędów.
-- [ ] Wybrać sposób przełączania języka.
-- [ ] Sprawdzić natywny mechanizm `_locales`.
-- [ ] Rozważyć `_locales/pl/messages.json`.
-- [ ] Rozważyć `_locales/en/messages.json`.
+- [x] Oddzielić teksty UI od logiki.
+- [x] Przygotować obsługę języka polskiego.
+- [x] Przygotować obsługę języka angielskiego.
+- [x] Przetłumaczyć teksty popupu.
+- [x] Przetłumaczyć teksty overlay.
+- [x] Przetłumaczyć teksty emergency unlock.
+- [x] Przetłumaczyć countdown.
+- [x] Przetłumaczyć komunikaty błędów.
+- [x] Wybrać sposób przełączania języka.
+- [x] Sprawdzić natywny mechanizm `_locales`.
+- [x] Rozważyć `_locales/pl/messages.json`.
+- [x] Rozważyć `_locales/en/messages.json`.
 
 Kryterium ukończenia:
 
 - [ ] Rozszerzenie działa po polsku i po angielsku.
-- [ ] Wszystkie komunikaty są przetłumaczone.
-- [ ] Nie ma mieszania języków w interfejsie.
-- [ ] Rozwiązanie wykorzystuje standardowe mechanizmy Firefoxa, jeśli są wystarczające.
+- [x] Wszystkie komunikaty są przetłumaczone.
+- [x] Nie ma mieszania języków w interfejsie.
+- [x] Rozwiązanie wykorzystuje standardowe mechanizmy Firefoxa, jeśli są wystarczające.
 
 ## Faza 3: Testy Ręczne Na Facebooku I Messengerze
 
@@ -101,7 +101,7 @@ Scenariusze testowe:
 - [ ] Wyszukiwarka Facebooka.
 - [ ] Wyszukiwarka Messengera.
 - [ ] Aktywacja blokady, gdy pole pisania jest już otwarte.
-- [ ] Emergency unlock i automatyczny powrót blokady po 15 minutach.
+- [ ] Emergency unlock i automatyczny powrót blokady po 5 minutach.
 
 Kryterium ukończenia:
 
